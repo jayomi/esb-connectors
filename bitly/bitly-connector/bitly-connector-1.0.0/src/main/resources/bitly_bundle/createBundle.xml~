@@ -1,0 +1,33 @@
+<template xmlns="http://ws.apache.org/ns/synapse" name="createBundle">
+
+    <parameter name="bundleTitle"
+               description="the title of the bundle to be created " />
+
+    <sequence>
+        <property name="uri.var.bundleTitle" expression="$func:bundleTitle" />
+
+
+        <property name="Accept-Encoding" action="remove" scope="transport" />
+        <payloadFactory media-type="xml">
+            <format>
+                <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+                    <soapenv:Header/>
+                    <soapenv:Body >
+
+                    </soapenv:Body>
+                </soapenv:Envelope>
+            </format>
+            <args/>
+
+        </payloadFactory>
+
+        <call>
+            <endpoint>
+                <http method="get"
+                      uri-template="https://api-ssl.bitly.com/v3/bundle/create?access_token={uri.var.bitly.accessToken}&amp;title={uri.var.bundleTitle}" />
+            </endpoint>
+
+        </call>
+        <property name="messageType" value="application/xml" scope="axis2" />
+    </sequence>
+</template>

@@ -1,0 +1,33 @@
+<template xmlns="http://ws.apache.org/ns/synapse" name="getBundleContents">
+
+    <parameter name="bundleLink"
+               description="the URL corresponding to the bundle to be returned " />
+
+    <sequence>
+        <property name="uri.var.bundleLink" expression="$func:bundleLink" />
+
+
+        <property name="Accept-Encoding" action="remove" scope="transport" />
+        <payloadFactory media-type="xml">
+            <format>
+                <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+                    <soapenv:Header/>
+                    <soapenv:Body >
+
+                    </soapenv:Body>
+                </soapenv:Envelope>
+            </format>
+            <args/>
+
+        </payloadFactory>
+
+        <call>
+            <endpoint>
+                <http method="get"
+                      uri-template="https://api-ssl.bitly.com/v3/bundle/contents?access_token={uri.var.bitly.accessToken}&amp;bundle_link={uri.var.bundleLink}" />
+            </endpoint>
+
+        </call>
+        <property name="messageType" value="application/xml" scope="axis2" />
+    </sequence>
+</template>

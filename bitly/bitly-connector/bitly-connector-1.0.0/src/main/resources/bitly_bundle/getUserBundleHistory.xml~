@@ -1,0 +1,28 @@
+<template xmlns="http://ws.apache.org/ns/synapse" name="getUserBundleHistory">
+
+    <sequence>
+
+        <property name="Accept-Encoding" action="remove" scope="transport" />
+        <payloadFactory media-type="xml">
+            <format>
+                <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+                    <soapenv:Header/>
+                    <soapenv:Body >
+
+                    </soapenv:Body>
+                </soapenv:Envelope>
+            </format>
+            <args/>
+
+        </payloadFactory>
+
+        <call>
+            <endpoint>
+                <http method="get"
+                      uri-template="https://api-ssl.bitly.com/v3/user/bundle_history?access_token={uri.var.bitly.accessToken}" />
+            </endpoint>
+
+        </call>
+        <property name="messageType" value="application/xml" scope="axis2" />
+    </sequence>
+</template>

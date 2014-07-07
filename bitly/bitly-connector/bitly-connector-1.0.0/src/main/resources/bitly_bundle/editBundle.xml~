@@ -1,0 +1,36 @@
+<template xmlns="http://ws.apache.org/ns/synapse" name="editBundle">
+
+    <parameter name="newBundleTitle"
+               description="the title of the bundle to be created " />
+    <parameter name="editBundleLink"
+               description="the URL corresponding to the bundle to be returned " />
+
+    <sequence>
+        <property name="uri.var.newBundleTitle" expression="$func:newBundleTitle" />
+        <property name="uri.var.editBundleLink" expression="$func:editBundleLink" />
+
+
+        <property name="Accept-Encoding" action="remove" scope="transport" />
+        <payloadFactory media-type="xml">
+            <format>
+                <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+                    <soapenv:Header/>
+                    <soapenv:Body >
+
+                    </soapenv:Body>
+                </soapenv:Envelope>
+            </format>
+            <args/>
+
+        </payloadFactory>
+
+        <call>
+            <endpoint>
+                <http method="get"
+                      uri-template="https://api-ssl.bitly.com/v3/bundle/edit?access_token={uri.var.bitly.accessToken}&amp;title={uri.var.newBundleTitle}&amp;bundle_link={uri.var.editBundleLink}" />
+            </endpoint>
+
+        </call>
+        <property name="messageType" value="application/xml" scope="axis2" />
+    </sequence>
+</template>

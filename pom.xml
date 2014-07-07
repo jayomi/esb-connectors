@@ -35,6 +35,7 @@
 	<module>twilio/1.0.0</module>
         <module>googlespreadsheet/1.0.0</module>
         <module>googlespreadsheet/2.0.0</module>
+	<module>bitly/bitly-connector</module>
 	<module>paypal</module>
 	<module>linkedin</module>
 	<module>amazons3</module>

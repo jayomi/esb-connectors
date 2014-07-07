@@ -1,0 +1,52 @@
+<template xmlns="http://ws.apache.org/ns/synapse" name="addLinkToBundle">
+
+    <parameter name="toBundleLink"
+               description="the URL corresponding to the bundle to which the link will be added " />
+
+    <parameter name="addBitlyLink"
+               description="the URL to be added to the specified bundle " />
+
+    <parameter name="title"
+               description="the title of the bundle to be created " />
+
+
+    <sequence>
+
+        <property name="uri.var.toBundleLink" expression="$func:toBundleLink" />
+        <property name="uri.var.addBitlyLink" expression="$func:addBitlyLink" />
+        <property name="uri.var.title" expression="$func:title"/>
+
+        <filter
+                xpath="(not(get-property('uri.var.title'))) = '' or (not(string(get-property('uri.var.title'))))">
+            <then>
+                <property name="uri.var.apiParameters"
+                          expression="fn:concat(get-property('uri.var.apiParameters'),'&amp;title=',get-property('uri.var.title'))" />
+            </then>
+
+        </filter>
+
+        <property name="Accept-Encoding" action="remove" scope="transport" />
+        <payloadFactory media-type="xml">
+            <format>
+                <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+                    <soapenv:Header/>
+                    <soapenv:Body >
+
+                    </soapenv:Body>
+                </soapenv:Envelope>
+            </format>
+            <args/>
+
+        </payloadFactory>
+
+        <call>
+            <endpoint>
+                <http method="get"
+                      uri-template="https://api-ssl.bitly.com/v3/bundle/link_add?access_token={uri.var.bitly.accessToken}&amp;bundle_link={uri.var.toBundleLink}&amp;link={uri.var.addBitlyLink}&amp;{uri.var.apiParameters}" />
+            </endpoint>
+
+        </call>
+        <property name="messageType" value="application/xml" scope="axis2" />
+    </sequence>
+</template>
+
